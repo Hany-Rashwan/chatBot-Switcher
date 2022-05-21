@@ -117,3 +117,7 @@ const A = [
   },
 ];
 
+export function parseBooleanFromEnv(VARIABLE_NAME: string) {
+  console.log(process.env[VARIABLE_NAME])
+  return process.env[VARIABLE_NAME];
+}

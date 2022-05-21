@@ -3,6 +3,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const port = +process.env.PORT;
+  console.log(process.env.SETURL);
   const app = await NestFactory.create(AppModule, { logger: ['verbose'] });
 
   // Swagger config ----------------------------
@@ -14,7 +16,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
-  console.log('Bot Switcher is running on Port: 3000');
+  await app.listen(port);
+  console.log(`Bot Switcher is running on Port: ${port}`);
 }
 bootstrap();

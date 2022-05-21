@@ -1,80 +1,95 @@
 import { Injectable } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
 import { IAgentStatus, Payload } from './test';
 
 const token =
-  'MjQ3MGRkN2EtZjZjYS00ZDk2LTlhZjYtODJlMTZiNTBlNzcwOmRhbDpNR0luQTVLbzkwdDZ6U0VoNjRHNUQtRlNKUG8=';
-const URL = 'https://api.livechatinc.com/v3.2/agent/action/set_routing_status';
-const URL2 =
-  'https://api.livechatinc.com/v3.4/agent/action/list_routing_statuses';
+  'MjQ3MGRkN2EtZjZjYS00ZDk2LTlhZjYtODJlMTZiNTBlNzcwOmRhbDpNR0luQTVLbzkwdDZ6U0VoNjRHNUQtRlNKUG8='; //process.env.TOKEN;
+const Set_Bot_Status_URL =
+  'https://api.livechatinc.com/v3.2/agent/action/set_routing_status'; //process.env.SETURL;
+const List_Bot_Status_URL =
+  'https://api.livechatinc.com/v3.4/agent/action/list_routing_statuses'; //process.env.LISTURL;
 
 @Injectable()
 export class AppService {
   constructor(private data: Payload) {}
 
-  // 0 17 * * 5   // Firday at 17:00 UTC
-  //@corn(0 17 * * 5 )
+  //========= goWeekendStrategy (turn normal bot down & agency bot up)=========================
+
+  //@Cron('0 09 * * MON', { name: 'weekend-job' }) // for testing
+  @Cron('0 17 * * FRI', { name: 'weekend-job' }) // Firday at 17:00 UTC
   async goWeekendStrategy(): Promise<boolean> {
-    const normal_bot_offline = await axios.post(
-      URL,
-      this.data.getNormalAgentOffline(),
-      {
-        headers: {
-          Authorization: `Basic ${token}`,
+    try {
+      const normal_bot_offline = await axios.post(
+        Set_Bot_Status_URL,
+        this.data.getNormalAgentOffline(),
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
         },
-      },
-    );
-    //------------------------------------------
-    const agency_bot_online = await axios.post(
-      URL,
-      this.data.getAgencyOnline(),
-      {
-        headers: {
-          Authorization: `Basic ${token}`,
+      );
+      //------------------------------------------
+      const agency_bot_online = await axios.post(
+        Set_Bot_Status_URL,
+        this.data.getAgencyOnline(),
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
         },
-      },
-    );
-    //-------------------------------------------
-    console.log(
-      '*** WEEKEND MODE ACTIVATED *** agency bot up , normal bot down',
-    );
+      );
+      //-------------------------------------------
+      console.log(
+        '*** WEEKEND MODE ACTIVATED *** agency bot up , normal bot down',
+      );
 
-    return agency_bot_online.status && normal_bot_offline.status == 200
-      ? true
-      : false;
+      return agency_bot_online.status && normal_bot_offline.status == 200
+        ? true
+        : false;
+    } catch (error) {
+      console.log(error);
+    }
   }
-  //===========================================================================================
+  //======== goWorkStrategy  (turn normal bot up & agency bot down) ===========================================
 
-  // 0 9 * * 1   // Monday at 09:00 UTC
+  //@Cron('0 09 * * MON', { name: 'backwork-job' }) // for testing
+  @Cron('0 09 * * MON', { name: 'backwork-job' }) // Monday at 09:00 UTC
   async goWorkStrategy(): Promise<boolean> {
-    const agency_bot_offline = await axios.post(
-      URL,
-      this.data.getAgencyOffline(),
-      {
-        headers: {
-          Authorization: `Basic ${token}`,
+    try {
+      const agency_bot_offline = await axios.post(
+        Set_Bot_Status_URL,
+        this.data.getAgencyOffline(),
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
         },
-      },
-    );
-    //-------------------------------------------
-    const normal_bot_online = await axios.post(
-      URL,
-      this.data.getNormalAgentOnline(),
-      {
-        headers: {
-          Authorization: `Basic ${token}`,
+      );
+      //-------------------------------------------
+      const normal_bot_online = await axios.post(
+        Set_Bot_Status_URL,
+        this.data.getNormalAgentOnline(),
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
         },
-      },
-    );
-    console.log('*** WORK MODE ACTIVATED *** normal bot up , agency bot down');
-    return agency_bot_offline.status && normal_bot_online.status == 200
-      ? true
-      : false;
+      );
+      console.log(
+        '*** WORK MODE ACTIVATED *** normal bot up , agency bot down',
+      );
+      return agency_bot_offline.status && normal_bot_online.status == 200
+        ? true
+        : false;
+    } catch (error) {
+      console.log(error);
+    }
   }
   // ------------------------------------------
   async getBotsStatus(): Promise<IAgentStatus[]> {
     const resp = await axios.post(
-      URL2,
+      List_Bot_Status_URL,
       {},
       {
         headers: {
