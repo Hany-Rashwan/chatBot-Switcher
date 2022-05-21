@@ -117,9 +117,3 @@ const A = [
   },
 ];
 
-console.log(
-  A.filter((a) => {
-    return (a.agent_id =
-      '50853d1054d5f112c2ec4c269b4ffbac' && a.agent_id= '463350084b0f309f14f8270a0f2a52c7');
-  }),
-);

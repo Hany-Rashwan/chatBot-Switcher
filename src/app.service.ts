@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { Payload } from './test';
+import { IAgentStatus, Payload } from './test';
 
 const token =
   'MjQ3MGRkN2EtZjZjYS00ZDk2LTlhZjYtODJlMTZiNTBlNzcwOmRhbDpNR0luQTVLbzkwdDZ6U0VoNjRHNUQtRlNKUG8=';
 const URL = 'https://api.livechatinc.com/v3.2/agent/action/set_routing_status';
+const URL2 =
+  'https://api.livechatinc.com/v3.4/agent/action/list_routing_statuses';
 
 @Injectable()
 export class AppService {
@@ -22,7 +24,7 @@ export class AppService {
         },
       },
     );
-    //------------------------------
+    //------------------------------------------
     const agency_bot_online = await axios.post(
       URL,
       this.data.getAgencyOnline(),
@@ -32,7 +34,7 @@ export class AppService {
         },
       },
     );
-    //---------------------------
+    //-------------------------------------------
     console.log(
       '*** WEEKEND MODE ACTIVATED *** agency bot up , normal bot down',
     );
@@ -54,7 +56,7 @@ export class AppService {
         },
       },
     );
-    //------------------------------
+    //-------------------------------------------
     const normal_bot_online = await axios.post(
       URL,
       this.data.getNormalAgentOnline(),
@@ -69,14 +71,24 @@ export class AppService {
       ? true
       : false;
   }
-
-  // async getBotStaus(): Promise<IAgentStatus> {
-  //   const resp = await axios.post(URL, this.data.getAgencyOnline(), {
-  //     headers: {
-  //       Authorization: `Basic ${token}`,
-  //     },
-  //   });
-  //   console.log('payload:', this.data.getAgencyOnline(), 'response:', resp);
-  //   return resp.data;
-  // }
+  // ------------------------------------------
+  async getBotsStatus(): Promise<IAgentStatus[]> {
+    const resp = await axios.post(
+      URL2,
+      {},
+      {
+        headers: {
+          Authorization: `Basic ${token}`,
+        },
+      },
+    );
+    const filtered_response = resp.data.filter((a: { agent_id: string }) => {
+      return (
+        a.agent_id === '50853d1054d5f112c2ec4c269b4ffbac' ||
+        a.agent_id === '463350084b0f309f14f8270a0f2a52c7'
+      );
+    });
+    console.log(filtered_response);
+    return filtered_response;
+  }
 }

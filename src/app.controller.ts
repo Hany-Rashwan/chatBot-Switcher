@@ -1,6 +1,7 @@
 import { Controller, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiTags } from '@nestjs/swagger';
+import { IAgentStatus } from './test';
 
 @ApiTags('Chat Bot Switcher')
 @Controller()
@@ -15,5 +16,10 @@ export class AppController {
   @Post('backwork')
   async goWorkStrategy(): Promise<boolean> {
     return await this.appService.goWorkStrategy();
+  }
+
+  @Post('Bots-Status')
+  async getBotsStaus(): Promise<IAgentStatus[]> {
+    return await this.appService.getBotsStatus();
   }
 }
