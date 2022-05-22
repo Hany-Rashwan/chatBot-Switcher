@@ -9,11 +9,11 @@ import { Payload } from './test';
   imports: [ConfigModule.forRoot({ isGlobal: true }), ScheduleModule.forRoot()],
   controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: Payload,
       useClass: Payload,
     },
+    AppService,
   ],
 })
 export class AppModule {}
