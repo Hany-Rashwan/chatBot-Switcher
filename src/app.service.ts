@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
-import { IAgentStatus, Payload } from './test';
-
-const token =
-  'MjQ3MGRkN2EtZjZjYS00ZDk2LTlhZjYtODJlMTZiNTBlNzcwOmRhbDpNR0luQTVLbzkwdDZ6U0VoNjRHNUQtRlNKUG8='; //process.env.TOKEN;
-const Set_Bot_Status_URL =
-  'https://api.livechatinc.com/v3.2/agent/action/set_routing_status'; //process.env.SETURL;
-const List_Bot_Status_URL =
-  'https://api.livechatinc.com/v3.4/agent/action/list_routing_statuses'; //process.env.LISTURL;
+import {
+  agency_bot_agent_ID,
+  IAgentStatus,
+  List_Bot_Status_URL,
+  normal_bot_agent_ID,
+  parseStringEnv,
+  Payload,
+  Set_Bot_Status_URL,
+} from './test';
 
 @Injectable()
 export class AppService {
@@ -25,7 +26,7 @@ export class AppService {
         this.data.getNormalAgentOffline(),
         {
           headers: {
-            Authorization: `Basic ${token}`,
+            Authorization: `Basic ${parseStringEnv('TOKEN')}`,
           },
         },
       );
@@ -35,7 +36,7 @@ export class AppService {
         this.data.getAgencyOnline(),
         {
           headers: {
-            Authorization: `Basic ${token}`,
+            Authorization: `Basic ${parseStringEnv('TOKEN')}`,
           },
         },
       );
@@ -62,7 +63,7 @@ export class AppService {
         this.data.getAgencyOffline(),
         {
           headers: {
-            Authorization: `Basic ${token}`,
+            Authorization: `Basic ${parseStringEnv('TOKEN')}`,
           },
         },
       );
@@ -72,7 +73,7 @@ export class AppService {
         this.data.getNormalAgentOnline(),
         {
           headers: {
-            Authorization: `Basic ${token}`,
+            Authorization: `Basic ${parseStringEnv('TOKEN')}`,
           },
         },
       );
@@ -93,17 +94,17 @@ export class AppService {
       {},
       {
         headers: {
-          Authorization: `Basic ${token}`,
+          Authorization: `Basic ${parseStringEnv('TOKEN')}`,
         },
       },
     );
     const filtered_response = resp.data.filter((a: { agent_id: string }) => {
       return (
-        a.agent_id === '50853d1054d5f112c2ec4c269b4ffbac' ||
-        a.agent_id === '463350084b0f309f14f8270a0f2a52c7'
+        a.agent_id === agency_bot_agent_ID || a.agent_id === normal_bot_agent_ID
       );
     });
     console.log(filtered_response);
+
     return filtered_response;
   }
 }
