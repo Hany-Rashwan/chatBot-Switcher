@@ -9,7 +9,7 @@ import {
   parseStringEnv,
   Payload,
   Set_Bot_Status_URL,
-} from './test';
+} from './inputs';
 
 @Injectable()
 export class AppService {

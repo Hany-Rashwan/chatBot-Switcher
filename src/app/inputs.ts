@@ -7,11 +7,12 @@ enum bot_status {
   online = 'accepting_chats',
   offline = 'offline',
 }
-
+//-------------------------------------------------------
 export interface IAgentStatus {
   readonly status: string;
   readonly agent_id: string;
 }
+//---------------------------------------------------------
 
 @Injectable()
 export class Payload {
@@ -55,12 +56,12 @@ export class Payload {
     };
   }
 }
-
+//---------------------------------------------------------------------------
 export const Set_Bot_Status_URL =
   'https://api.livechatinc.com/v3.2/agent/action/set_routing_status';
 export const List_Bot_Status_URL =
   'https://api.livechatinc.com/v3.4/agent/action/list_routing_statuses';
-
+//--------------------------------------------------------------------------
 export const parseStringEnv = (name: string) => {
   const value: string = process.env[name];
   // console.log(value);

@@ -1,7 +1,7 @@
 import { Controller, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiTags } from '@nestjs/swagger';
-import { IAgentStatus } from './test';
+import { IAgentStatus } from './inputs';
 
 @ApiTags('Chat Bot Switcher')
 @Controller()
