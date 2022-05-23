@@ -1,5 +1,3 @@
-import { Injectable } from '@nestjs/common';
-
 export const agency_bot_agent_ID = '50853d1054d5f112c2ec4c269b4ffbac';
 export const normal_bot_agent_ID = '463350084b0f309f14f8270a0f2a52c7';
 //-----------------------------------------------------------
@@ -19,40 +17,40 @@ export interface IAgentStatus {
 }
 //---------------------------------------------------------
 
-@Injectable()
-export class Payload implements IAgentStatus {
-  status = '';
-  agent_id = '';
+// @Injectable()
+// export class Payload implements IAgentStatus {
+//   status = '';
+//   agent_id = '';
 
-  constructor() {}
+//   constructor() {}
 
-  getNormalAgentOnline = () => {
-    return {
-      status: BotStatus.online,
-      agent_id: normal_bot_agent_ID,
-    };
+export const getNormalAgentOnline = (): IAgentStatus => {
+  return {
+    status: BotStatus.online,
+    agent_id: normal_bot_agent_ID,
   };
+};
 
-  getNormalAgentOffline = () => {
-    return {
-      status: BotStatus.offline,
-      agent_id: normal_bot_agent_ID,
-    };
+export const getNormalAgentOffline = (): IAgentStatus => {
+  return {
+    status: BotStatus.offline,
+    agent_id: normal_bot_agent_ID,
   };
+};
 
-  getAgencyOnline = () => {
-    return {
-      status: BotStatus.online,
-      agent_id: agency_bot_agent_ID,
-    };
+export const getAgencyOnline = (): IAgentStatus => {
+  return {
+    status: BotStatus.online,
+    agent_id: agency_bot_agent_ID,
   };
-  getAgencyOffline = () => {
-    return {
-      status: BotStatus.offline,
-      agent_id: agency_bot_agent_ID,
-    };
+};
+export const getAgencyOffline = (): IAgentStatus => {
+  return {
+    status: BotStatus.offline,
+    agent_id: agency_bot_agent_ID,
   };
-}
+};
+//}
 //---------------------------------------------------------------------------
 export const Set_Bot_Status_URL =
   'https://api.livechatinc.com/v3.2/agent/action/set_routing_status';

@@ -3,18 +3,21 @@ import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
 import {
   agency_bot_agent_ID,
+  getAgencyOffline,
+  getAgencyOnline,
+  getNormalAgentOffline,
+  getNormalAgentOnline,
   IAgentStatus,
   List_Bot_Status_URL,
   normal_bot_agent_ID,
   parseStringEnv,
-  Payload,
   Set_Bot_Status_URL,
   StrategyTime,
 } from './inputs';
 
 @Injectable()
 export class AppService {
-  constructor(private data: Payload) {}
+  constructor() {}
 
   //========= goWeekendStrategy (turn normal bot down & agency bot up)=========================
 
@@ -24,7 +27,7 @@ export class AppService {
     try {
       const normal_bot_offline = await axios.post(
         Set_Bot_Status_URL,
-        this.data.getNormalAgentOffline,
+        getNormalAgentOffline,
         {
           headers: {
             Authorization: `Basic ${parseStringEnv('TOKEN')}`,
@@ -34,7 +37,7 @@ export class AppService {
       //------------------------------------------
       const agency_bot_online = await axios.post(
         Set_Bot_Status_URL,
-        this.data.getAgencyOnline,
+        getAgencyOnline,
         {
           headers: {
             Authorization: `Basic ${parseStringEnv('TOKEN')}`,
@@ -61,7 +64,7 @@ export class AppService {
     try {
       const agency_bot_offline = await axios.post(
         Set_Bot_Status_URL,
-        this.data.getAgencyOffline,
+        getAgencyOffline,
         {
           headers: {
             Authorization: `Basic ${parseStringEnv('TOKEN')}`,
@@ -71,7 +74,7 @@ export class AppService {
       //-------------------------------------------
       const normal_bot_online = await axios.post(
         Set_Bot_Status_URL,
-        this.data.getNormalAgentOnline,
+        getNormalAgentOnline,
         {
           headers: {
             Authorization: `Basic ${parseStringEnv('TOKEN')}`,
