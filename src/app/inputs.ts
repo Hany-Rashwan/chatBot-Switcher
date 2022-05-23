@@ -2,8 +2,13 @@ import { Injectable } from '@nestjs/common';
 
 export const agency_bot_agent_ID = '50853d1054d5f112c2ec4c269b4ffbac';
 export const normal_bot_agent_ID = '463350084b0f309f14f8270a0f2a52c7';
-
-enum bot_status {
+//-----------------------------------------------------------
+export enum StrategyTime {
+  weekend = '0 17 * * FRI',
+  work = '0 09 * * MON',
+}
+//-----------------------------------------------------------
+enum BotStatus {
   online = 'accepting_chats',
   offline = 'offline',
 }
@@ -31,27 +36,27 @@ export class Payload {
 
   getNormalAgentOnline() {
     return {
-      status: bot_status.online,
+      status: BotStatus.online,
       agent_id: normal_bot_agent_ID,
     };
   }
 
   getNormalAgentOffline() {
     return {
-      status: bot_status.offline,
+      status: BotStatus.offline,
       agent_id: normal_bot_agent_ID,
     };
   }
 
   getAgencyOnline() {
     return {
-      status: bot_status.online,
+      status: BotStatus.online,
       agent_id: agency_bot_agent_ID,
     };
   }
   getAgencyOffline() {
     return {
-      status: bot_status.offline,
+      status: BotStatus.offline,
       agent_id: agency_bot_agent_ID,
     };
   }
@@ -64,7 +69,6 @@ export const List_Bot_Status_URL =
 //--------------------------------------------------------------------------
 export const parseStringEnv = (name: string) => {
   const value: string = process.env[name];
-  // console.log(value);
   if (!value) {
     throw new Error(`Invalid env ${name}`);
   }

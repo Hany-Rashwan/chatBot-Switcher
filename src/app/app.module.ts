@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 import { Payload } from './inputs';
 
 @Module({
-  imports: [ConfigModule.forRoot(), ScheduleModule.forRoot()],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), ScheduleModule.forRoot()],
   controllers: [AppController],
   providers: [
     {

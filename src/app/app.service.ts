@@ -9,6 +9,7 @@ import {
   parseStringEnv,
   Payload,
   Set_Bot_Status_URL,
+  StrategyTime,
 } from './inputs';
 
 @Injectable()
@@ -18,7 +19,7 @@ export class AppService {
   //========= goWeekendStrategy (turn normal bot down & agency bot up)=========================
 
   //@Cron('0 09 * * MON', { name: 'weekend-job' }) // for testing
-  @Cron('0 17 * * FRI', { name: 'weekend-job' }) // Firday at 17:00 UTC
+  @Cron(StrategyTime.weekend, { name: 'weekend-job' }) // Firday at 17:00 UTC
   async goWeekendStrategy(): Promise<boolean> {
     try {
       const normal_bot_offline = await axios.post(
@@ -55,7 +56,7 @@ export class AppService {
   //======== goWorkStrategy  (turn normal bot up & agency bot down) ===========================================
 
   //@Cron('0 09 * * MON', { name: 'backwork-job' }) // for testing
-  @Cron('0 09 * * MON', { name: 'backwork-job' }) // Monday at 09:00 UTC
+  @Cron(StrategyTime.work, { name: 'backwork-job' }) // Monday at 09:00 UTC
   async goWorkStrategy(): Promise<boolean> {
     try {
       const agency_bot_offline = await axios.post(
@@ -87,7 +88,7 @@ export class AppService {
       console.log(error);
     }
   }
-  // ------------------------------------------
+  // -------------- get bots status --------------------------
   async getBotsStatus(): Promise<IAgentStatus[]> {
     const resp = await axios.post(
       List_Bot_Status_URL,
