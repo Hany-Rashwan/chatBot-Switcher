@@ -24,7 +24,7 @@ export class AppService {
     try {
       const normal_bot_offline = await axios.post(
         Set_Bot_Status_URL,
-        this.data.getNormalAgentOffline(),
+        this.data.getNormalAgentOffline,
         {
           headers: {
             Authorization: `Basic ${parseStringEnv('TOKEN')}`,
@@ -34,7 +34,7 @@ export class AppService {
       //------------------------------------------
       const agency_bot_online = await axios.post(
         Set_Bot_Status_URL,
-        this.data.getAgencyOnline(),
+        this.data.getAgencyOnline,
         {
           headers: {
             Authorization: `Basic ${parseStringEnv('TOKEN')}`,
@@ -61,7 +61,7 @@ export class AppService {
     try {
       const agency_bot_offline = await axios.post(
         Set_Bot_Status_URL,
-        this.data.getAgencyOffline(),
+        this.data.getAgencyOffline,
         {
           headers: {
             Authorization: `Basic ${parseStringEnv('TOKEN')}`,
@@ -71,7 +71,7 @@ export class AppService {
       //-------------------------------------------
       const normal_bot_online = await axios.post(
         Set_Bot_Status_URL,
-        this.data.getNormalAgentOnline(),
+        this.data.getNormalAgentOnline,
         {
           headers: {
             Authorization: `Basic ${parseStringEnv('TOKEN')}`,

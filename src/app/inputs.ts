@@ -23,43 +23,35 @@ export interface IAgentStatus {
 export class Payload implements IAgentStatus {
   status = '';
   agent_id = '';
-  // private static instance: Payload;
+
   constructor() {}
 
-  // static getInstance(): Payload {
-  //   if (!this.instance) {
-  //     this.instance = new this();
-  //   }
-
-  //   return this.instance;
-  // }
-
-  getNormalAgentOnline() {
+  getNormalAgentOnline = () => {
     return {
       status: BotStatus.online,
       agent_id: normal_bot_agent_ID,
     };
-  }
+  };
 
-  getNormalAgentOffline() {
+  getNormalAgentOffline = () => {
     return {
       status: BotStatus.offline,
       agent_id: normal_bot_agent_ID,
     };
-  }
+  };
 
-  getAgencyOnline() {
+  getAgencyOnline = () => {
     return {
       status: BotStatus.online,
       agent_id: agency_bot_agent_ID,
     };
-  }
-  getAgencyOffline() {
+  };
+  getAgencyOffline = () => {
     return {
       status: BotStatus.offline,
       agent_id: agency_bot_agent_ID,
     };
-  }
+  };
 }
 //---------------------------------------------------------------------------
 export const Set_Bot_Status_URL =
