@@ -20,9 +20,9 @@ export interface IAgentStatus {
 //---------------------------------------------------------
 
 @Injectable()
-export class Payload {
-  private status = '';
-  private agent_id = '';
+export class Payload implements IAgentStatus {
+  status = '';
+  agent_id = '';
   // private static instance: Payload;
   constructor() {}
 
