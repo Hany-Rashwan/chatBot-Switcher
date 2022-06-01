@@ -19,48 +19,11 @@ import {
 export class AppService {
   constructor() {}
 
-  //========= goWeekendStrategy (turn normal bot down & agency bot up)=========================
+  //========= goWorkMode (turn normal bot up & agency bot down)=========================
 
   //@Cron('0 09 * * MON', { name: 'weekend-job' }) // for testing
-  @Cron(StrategyTime.weekend, { name: 'weekend-job' }) // Firday at 17:00 UTC
-  async goWeekendStrategy(): Promise<boolean> {
-    try {
-      const normal_bot_offline = await axios.post(
-        Set_Bot_Status_URL,
-        getNormalAgentOffline,
-        {
-          headers: {
-            Authorization: `Basic ${parseStringEnv('TOKEN')}`,
-          },
-        },
-      );
-      //------------------------------------------
-      const agency_bot_online = await axios.post(
-        Set_Bot_Status_URL,
-        getAgencyOnline,
-        {
-          headers: {
-            Authorization: `Basic ${parseStringEnv('TOKEN')}`,
-          },
-        },
-      );
-      //-------------------------------------------
-      console.log(
-        '*** WEEKEND MODE ACTIVATED *** agency bot up , normal bot down',
-      );
-
-      return agency_bot_online.status && normal_bot_offline.status == 200
-        ? true
-        : false;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  //======== goWorkStrategy  (turn normal bot up & agency bot down) ===========================================
-
-  //@Cron('0 09 * * MON', { name: 'backwork-job' }) // for testing
-  @Cron(StrategyTime.work, { name: 'backwork-job' }) // Monday at 09:00 UTC
-  async goWorkStrategy(): Promise<boolean> {
+  @Cron(StrategyTime.everydayWork, { name: 'weekend-job' }) // (monday-friday) at 9:00 UTC
+  async goWorkMode(): Promise<boolean> {
     try {
       const agency_bot_offline = await axios.post(
         Set_Bot_Status_URL,
@@ -85,6 +48,43 @@ export class AppService {
         '*** WORK MODE ACTIVATED *** normal bot up , agency bot down',
       );
       return agency_bot_offline.status && normal_bot_online.status == 200
+        ? true
+        : false;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  //======== goEndOfdayMode  (turn normal bot down & agency bot up) ===========================================
+
+  //@Cron('0 09 * * MON', { name: 'backwork-job' }) // for testing
+  @Cron(StrategyTime.everydayEndOFWork, { name: 'backwork-job' }) // (monday-friday) at 17:00 UTC
+  async goEndOfDayMode(): Promise<boolean> {
+    try {
+      const normal_bot_offline = await axios.post(
+        Set_Bot_Status_URL,
+        getNormalAgentOffline,
+        {
+          headers: {
+            Authorization: `Basic ${parseStringEnv('TOKEN')}`,
+          },
+        },
+      );
+      //------------------------------------------
+      const agency_bot_online = await axios.post(
+        Set_Bot_Status_URL,
+        getAgencyOnline,
+        {
+          headers: {
+            Authorization: `Basic ${parseStringEnv('TOKEN')}`,
+          },
+        },
+      );
+      //-------------------------------------------
+      console.log(
+        '*** EndOfDay MODE ACTIVATED *** agency bot up , normal bot down',
+      );
+
+      return agency_bot_online.status && normal_bot_offline.status == 200
         ? true
         : false;
     } catch (error) {

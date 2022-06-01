@@ -1,9 +1,11 @@
-export const agency_bot_agent_ID = '50853d1054d5f112c2ec4c269b4ffbac';
-export const normal_bot_agent_ID = '463350084b0f309f14f8270a0f2a52c7';
+export const agency_bot_agent_ID = '50853d1054d5f112c2ec4c269b4ffbac'; // works on monday to friday 17 to 9 utc && friday to moday 17 to 9
+export const normal_bot_agent_ID = '463350084b0f309f14f8270a0f2a52c7'; // works on monday to friday 9  to 17 utc && 
 //-----------------------------------------------------------
 export enum StrategyTime {
+  everydayWork = '0 9 * * 1-5',
+  everydayEndOFWork = '0 17 * * 1-5',
+  work = '0 09 * * -1',
   weekend = '0 17 * * FRI',
-  work = '0 09 * * MON',
 }
 //-----------------------------------------------------------
 enum BotStatus {

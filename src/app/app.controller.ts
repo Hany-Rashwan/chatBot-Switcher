@@ -8,14 +8,14 @@ import { IAgentStatus } from './inputs';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Post('weekend')
-  async goWeekendStrategy(): Promise<boolean> {
-    return await this.appService.goWeekendStrategy();
+  @Post('work-mode')
+  async goWorkMode(): Promise<boolean> {
+    return await this.appService.goWorkMode();
   }
 
-  @Post('backwork')
-  async goWorkStrategy(): Promise<boolean> {
-    return await this.appService.goWorkStrategy();
+  @Post('end-of-day')
+  async goEndOfDayMode(): Promise<boolean> {
+    return await this.appService.goEndOfDayMode();
   }
 
   @Post('Bots-Status')
