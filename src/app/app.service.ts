@@ -12,7 +12,7 @@ import {
   normal_bot_agent_ID,
   parseStringEnv,
   Set_Bot_Status_URL,
-  StrategyTime,
+  Strategy,
 } from './inputs';
 
 @Injectable()
@@ -21,8 +21,11 @@ export class AppService {
 
   //========= goWorkMode (turn normal bot up & agency bot down)=========================
 
-  //@Cron('0 09 * * MON', { name: 'weekend-job' }) // for testing
-  @Cron(StrategyTime.everydayWork, { name: 'weekend-job' }) // (monday-friday) at 9:00 UTC
+  //@Cron('0 09 * * MON', { name: 'weekend-job', timeZone: 'UTC' }) // for testing
+  @Cron(Strategy.everydayWork, {
+    name: 'goWork-job',
+    timeZone: 'UTC',
+  })
   async goWorkMode(): Promise<boolean> {
     try {
       const agency_bot_offline = await axios.post(
@@ -45,7 +48,7 @@ export class AppService {
         },
       );
       console.log(
-        '*** WORK MODE ACTIVATED *** normal bot up , agency bot down',
+        '*** GO WORK MODE ACTIVATED *** normal bot up , agency bot down',
       );
       return agency_bot_offline.status && normal_bot_online.status == 200
         ? true
@@ -56,9 +59,9 @@ export class AppService {
   }
   //======== goEndOfdayMode  (turn normal bot down & agency bot up) ===========================================
 
-  //@Cron('0 09 * * MON', { name: 'backwork-job' }) // for testing
-  @Cron(StrategyTime.everydayEndOFWork, { name: 'backwork-job' }) // (monday-friday) at 17:00 UTC
-  async goEndOfDayMode(): Promise<boolean> {
+ // @Cron('5 4 * * MON-FRI', { name: 'endOfwork-job', timeZone: 'UTC' }) // for testing
+  @Cron(Strategy.everydayEndOFWork, { name: 'backwork-job', timeZone: 'UTC' }) // (monday-friday) at 17:00 UTC
+  async goEndOfworkMode(): Promise<boolean> {
     try {
       const normal_bot_offline = await axios.post(
         Set_Bot_Status_URL,
@@ -81,7 +84,7 @@ export class AppService {
       );
       //-------------------------------------------
       console.log(
-        '*** EndOfDay MODE ACTIVATED *** agency bot up , normal bot down',
+        '*** Go EndOfWork MODE ACTIVATED *** agency bot up , normal bot down',
       );
 
       return agency_bot_online.status && normal_bot_offline.status == 200

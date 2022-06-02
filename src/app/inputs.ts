@@ -1,11 +1,9 @@
 export const agency_bot_agent_ID = '50853d1054d5f112c2ec4c269b4ffbac'; // works on monday to friday 17 to 9 utc && friday to moday 17 to 9
-export const normal_bot_agent_ID = '463350084b0f309f14f8270a0f2a52c7'; // works on monday to friday 9  to 17 utc && 
+export const normal_bot_agent_ID = '463350084b0f309f14f8270a0f2a52c7'; // works on monday to friday 9  to 17 utc &&
 //-----------------------------------------------------------
-export enum StrategyTime {
-  everydayWork = '0 9 * * 1-5',
-  everydayEndOFWork = '0 17 * * 1-5',
-  work = '0 09 * * -1',
-  weekend = '0 17 * * FRI',
+export enum Strategy {
+  everydayWork = '0 9 * * MON-FRI',
+  everydayEndOFWork = '0 17 * * MON-FRI',
 }
 //-----------------------------------------------------------
 enum BotStatus {
@@ -19,40 +17,25 @@ export interface IAgentStatus {
 }
 //---------------------------------------------------------
 
-// @Injectable()
-// export class Payload implements IAgentStatus {
-//   status = '';
-//   agent_id = '';
-
-//   constructor() {}
-
-export const getNormalAgentOnline = (): IAgentStatus => {
-  return {
-    status: BotStatus.online,
-    agent_id: normal_bot_agent_ID,
-  };
+export const getNormalAgentOnline = {
+  status: BotStatus.online,
+  agent_id: normal_bot_agent_ID,
 };
 
-export const getNormalAgentOffline = (): IAgentStatus => {
-  return {
-    status: BotStatus.offline,
-    agent_id: normal_bot_agent_ID,
-  };
+export const getNormalAgentOffline = {
+  status: BotStatus.offline,
+  agent_id: normal_bot_agent_ID,
 };
 
-export const getAgencyOnline = (): IAgentStatus => {
-  return {
-    status: BotStatus.online,
-    agent_id: agency_bot_agent_ID,
-  };
+export const getAgencyOnline = {
+  status: BotStatus.online,
+  agent_id: agency_bot_agent_ID,
 };
-export const getAgencyOffline = (): IAgentStatus => {
-  return {
-    status: BotStatus.offline,
-    agent_id: agency_bot_agent_ID,
-  };
+export const getAgencyOffline = {
+  status: BotStatus.offline,
+  agent_id: agency_bot_agent_ID,
 };
-//}
+
 //---------------------------------------------------------------------------
 export const Set_Bot_Status_URL =
   'https://api.livechatinc.com/v3.2/agent/action/set_routing_status';
