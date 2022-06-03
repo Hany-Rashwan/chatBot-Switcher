@@ -17,7 +17,7 @@ import {
 
 @Injectable()
 export class AppService {
-  constructor() {}
+  // constructor() {}
 
   //========= goWorkMode (turn normal bot up & agency bot down)=========================
 
@@ -48,7 +48,8 @@ export class AppService {
         },
       );
       console.log(
-        '*** GO WORK MODE ACTIVATED *** normal bot up , agency bot down',
+        '*** GO WORK MODE ACTIVATED *** normal bot up , agency bot down @',
+        new Date().toUTCString(),
       );
       return agency_bot_offline.status && normal_bot_online.status == 200
         ? true
@@ -59,7 +60,7 @@ export class AppService {
   }
   //======== goEndOfdayMode  (turn normal bot down & agency bot up) ===========================================
 
- // @Cron('5 4 * * MON-FRI', { name: 'endOfwork-job', timeZone: 'UTC' }) // for testing
+  // @Cron('5 4 * * MON-FRI', { name: 'endOfwork-job', timeZone: 'UTC' }) // for testing
   @Cron(Strategy.everydayEndOFWork, { name: 'backwork-job', timeZone: 'UTC' }) // (monday-friday) at 17:00 UTC
   async goEndOfworkMode(): Promise<boolean> {
     try {
@@ -84,7 +85,8 @@ export class AppService {
       );
       //-------------------------------------------
       console.log(
-        '*** Go EndOfWork MODE ACTIVATED *** agency bot up , normal bot down',
+        '*** Go EndOfWork MODE ACTIVATED *** agency bot up , normal bot down @',
+        new Date().toUTCString(),
       );
 
       return agency_bot_online.status && normal_bot_offline.status == 200
@@ -111,6 +113,7 @@ export class AppService {
       );
     });
     console.log(filtered_response);
+    console.log(new Date().toUTCString());
 
     return filtered_response;
   }
